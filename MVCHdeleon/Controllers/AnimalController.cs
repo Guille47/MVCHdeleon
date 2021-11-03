@@ -24,5 +24,29 @@ namespace MVCHdeleon.Controllers
             }
             return View(lst);
         }
+        [HttpGet]
+        public JsonResult Animal(int IdAnimalClass)
+        {
+            List<ElementJsonIntKey> lst = new List<ElementJsonIntKey>();
+            using (Models.cursomvcEntities db = new Models.cursomvcEntities())
+            {
+                lst = (from d in db.animal
+                       where d.idAnimal_class == IdAnimalClass
+                       select new ElementJsonIntKey
+                       {
+                           Value = d.id,
+                           Text = d.name
+                       }
+                       ).ToList();
+
+            }
+            return Json(lst, JsonRequestBehavior.AllowGet);
+        }
+
+        public class ElementJsonIntKey
+        {
+            public int Value { get; set; }
+            public string Text { get; set; }
+        }
     }
 }
